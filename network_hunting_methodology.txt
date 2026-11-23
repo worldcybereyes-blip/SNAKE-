@@ -1,0 +1,22 @@
+NETWORK HUNTING METHODOLOGY
+
+STEP 1. BASELINE
+  Establish which internal hosts normally talk to each other. Workstation to workstation traffic is usually rare.
+
+STEP 2. FIND RELAY CANDIDATES
+  Look for internal hosts that accept connections from many internal peers, or that hold long-lived connections to a small number of peers.
+
+STEP 3. LOOK FOR PROTOCOL ANOMALIES
+  Flows on unusual ports where no application protocol is identified, and HTTP requests missing normal headers or sent to bare IP addresses.
+
+STEP 4. CHECK PERIODICITY
+  Group connections by source and destination per time bucket. Regular intervals with jitter are a lead, not proof.
+
+STEP 5. PIVOT TO THE HOST
+  For each candidate host, pull service creation events, named pipe events, and a memory image before isolating.
+
+STEP 6. DOCUMENT
+  Record what was checked, what was ruled out, and the confidence of each finding.
+
+CAVEATS
+  Payload content is encrypted, so rely on metadata. Expect false positives from backup, monitoring, and VPN software.

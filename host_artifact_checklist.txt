@@ -1,0 +1,19 @@
+HOST ARTIFACT CHECKLIST
+
+FILE SYSTEM
+  - Files in COM-related system folders whose name, size, or timestamps do not match the operating system build.
+  - Libraries with no version resource and no valid signature that are loaded by services.
+
+SERVICES AND REGISTRY
+  - Services created recently, especially with generic or system-sounding names.
+  - Service image path or ServiceDll pointing outside normal system directories.
+
+PROCESSES AND MEMORY
+  - System processes with modules that have no backing file on disk.
+  - Manually mapped or injected regions in long-running service hosts.
+
+NAMED PIPES AND HANDLES
+  - Named pipes created by service processes that do not match installed software.
+
+TELEMETRY TO ENABLE
+  - Sysmon event IDs 1, 3, 7, 11, 17, 18 and Windows event 7045 for service installs.

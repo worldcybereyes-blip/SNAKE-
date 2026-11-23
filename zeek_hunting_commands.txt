@@ -1,0 +1,25 @@
+ZEEK LOG HUNTING COMMANDS
+Run against a directory of conn.log, http.log, and dns.log files.
+
+1. Internal to internal long-lived connections (possible relay behavior)
+   cat conn.log | zeek-cut id.orig_h id.resp_h id.resp_p proto duration | awk '$5 > 3600' | sort | uniq -c | sort -rn | head -50
+
+2. Internal to internal connections where no service was identified
+   cat conn.log | zeek-cut id.orig_h id.resp_h id.resp_p service | awk '$4 == "-"' | sort | uniq -c | sort -rn | head -50
+
+3. Workstations that act as servers (many distinct internal clients to one workstation)
+   cat conn.log | zeek-cut id.orig_h id.resp_h | sort -u | awk '{print $2}' | sort | uniq -c | sort -rn | head -50
+
+4. Beacon-like periodicity: count connections per source and destination per hour
+   cat conn.log | zeek-cut ts id.orig_h id.resp_h | awk '{print int($1/3600), $2, $3}' | sort | uniq -c | sort -rn | head -50
+
+5. HTTP requests with no User-Agent
+   cat http.log | zeek-cut id.orig_h host uri user_agent | awk '$4 == "-"' | sort | uniq -c | sort -rn | head -50
+
+6. HTTP requests directly to IP address hosts
+   cat http.log | zeek-cut id.orig_h host uri | grep -E '^[0-9.]+[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort | uniq -c | sort -rn | head -50
+
+7. Long DNS query names
+   cat dns.log | zeek-cut id.orig_h query | awk 'length($2) > 60' | sort | uniq -c | sort -rn | head -50
+
+Interpretation: none of these are proof of compromise. Combine hits with host telemetry, such as new services and named pipe creation, before escalating.

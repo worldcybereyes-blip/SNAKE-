@@ -1,0 +1,18 @@
+MITRE ATT&CK MAPPING
+
+PERSISTENCE
+  T1543.003  Create or Modify System Process: Windows Service
+
+DEFENSE EVASION
+  T1055      Process Injection
+  T1027      Obfuscated Files or Information
+
+COMMAND AND CONTROL
+  T1071.001  Application Layer Protocol: Web Protocols
+  T1573      Encrypted Channel
+  T1090      Proxy (peer-to-peer relay)
+
+COLLECTION
+  T1560      Archive Collected Data
+
+Always confirm technique IDs against the current ATT&CK release.

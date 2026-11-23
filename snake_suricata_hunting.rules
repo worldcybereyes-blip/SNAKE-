@@ -1,0 +1,7 @@
+alert tcp $HOME_NET any -> $HOME_NET any (msg:"SNAKE HUNT internal TCP flow with unrecognized application protocol"; flow:established; app-layer-protocol:failed; threshold:type both, track by_src, count 20, seconds 3600; classtype:trojan-activity; sid:9100001; rev:1; metadata:confidence low, purpose hunting;)
+
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SNAKE HUNT HTTP POST without User-Agent header"; flow:established,to_server; http.method; content:"POST"; http.user_agent; absent; threshold:type both, track by_src, count 5, seconds 3600; classtype:trojan-activity; sid:9100002; rev:1; metadata:confidence low, purpose hunting;)
+
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SNAKE HUNT HTTP request to bare IP host with cookie and no referer"; flow:established,to_server; http.cookie; content:"="; http.referer; absent; threshold:type both, track by_src, count 10, seconds 3600; classtype:trojan-activity; sid:9100003; rev:1; metadata:confidence low, purpose hunting;)
+
+alert dns $HOME_NET any -> any any (msg:"SNAKE HUNT DNS query name with very long label"; dns.query; bsize:>60; threshold:type both, track by_src, count 10, seconds 600; classtype:bad-unknown; sid:9100004; rev:1; metadata:confidence low, purpose hunting;)

@@ -1,0 +1,21 @@
+ARCHITECTURE NOTES
+
+PURPOSE
+  Summarize the publicly documented design of the SNAKE implant for defenders.
+
+COMPONENTS
+  - Loader: brings the main implant into memory.
+  - Core implant: handles tasking, module management, and encryption.
+  - Communications: HTTP and TCP based transports plus peer-to-peer relay.
+  - Encrypted storage: holds configuration, tools, and collected data.
+
+DESIGN CHARACTERISTICS
+  - Modular so capabilities can be swapped.
+  - Peer-to-peer mesh so most infected hosts never contact the operator directly.
+  - Custom encryption so network payload inspection is of little use.
+  - Long service life with changes between versions, including a move away from kernel components.
+
+ANALYST QUESTIONS
+  - Does this host relay traffic for other internal hosts?
+  - Is there an encrypted file in a system folder that does not belong to the operating system build?
+  - Is a service loading a library from an unexpected location?
